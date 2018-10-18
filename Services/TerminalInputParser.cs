@@ -7,7 +7,7 @@ namespace Puzzle.Services
     {
         public Direction RequestInput() => ParseTextInput(Console.ReadLine());
 
-        private Direction ParseTextInput(string input)
+        private static Direction ParseTextInput(string input)
         {
             if (string.IsNullOrWhiteSpace(input) || !Enum.TryParse(input, true, out Direction result))
             {
