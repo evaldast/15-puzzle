@@ -1,0 +1,11 @@
+C:\Users\Evaldas\RiderProjects\Puzzle\bin\Debug\netcoreapp2.1\Puzzle.deps.json
+C:\Users\Evaldas\RiderProjects\Puzzle\bin\Debug\netcoreapp2.1\Puzzle.runtimeconfig.json
+C:\Users\Evaldas\RiderProjects\Puzzle\bin\Debug\netcoreapp2.1\Puzzle.runtimeconfig.dev.json
+C:\Users\Evaldas\RiderProjects\Puzzle\bin\Debug\netcoreapp2.1\Puzzle.dll
+C:\Users\Evaldas\RiderProjects\Puzzle\bin\Debug\netcoreapp2.1\Puzzle.pdb
+C:\Users\Evaldas\RiderProjects\Puzzle\obj\Debug\netcoreapp2.1\Puzzle.csprojAssemblyReference.cache
+C:\Users\Evaldas\RiderProjects\Puzzle\obj\Debug\netcoreapp2.1\Puzzle.csproj.CoreCompileInputs.cache
+C:\Users\Evaldas\RiderProjects\Puzzle\obj\Debug\netcoreapp2.1\Puzzle.AssemblyInfoInputs.cache
+C:\Users\Evaldas\RiderProjects\Puzzle\obj\Debug\netcoreapp2.1\Puzzle.AssemblyInfo.cs
+C:\Users\Evaldas\RiderProjects\Puzzle\obj\Debug\netcoreapp2.1\Puzzle.dll
+C:\Users\Evaldas\RiderProjects\Puzzle\obj\Debug\netcoreapp2.1\Puzzle.pdb
