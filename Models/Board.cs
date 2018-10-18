@@ -62,8 +62,7 @@ namespace Puzzle.Models
 
         private void SwapPieces((int x, int y) pieceToMoveLocation, int moveByX, int moveByY)
         {
-            if ((pieceToMoveLocation.x + moveByX < 0 || pieceToMoveLocation.x + moveByX >= BoardWidth) ||
-                (pieceToMoveLocation.y + moveByY < 0 || pieceToMoveLocation.y + moveByY >= BoardWidth))
+            if (!SwapIsValid(pieceToMoveLocation, moveByX, moveByY))
             {
                 throw new ArgumentException(Error.InvalidDirection.ToString());
             }
@@ -77,6 +76,12 @@ namespace Puzzle.Models
             {
                 _emptyBoardPieceLocation = (x: pieceToMoveLocation.x + moveByX, y: pieceToMoveLocation.y + moveByY);
             }
+        }
+
+        private bool SwapIsValid((int x, int y) pieceToMoveLocation, int moveByX, int moveByY)
+        {
+            return ((pieceToMoveLocation.x + moveByX < 0 || pieceToMoveLocation.x + moveByX >= BoardWidth) ||
+                    (pieceToMoveLocation.y + moveByY < 0 || pieceToMoveLocation.y + moveByY >= BoardWidth));
         }
 
         public void Shuffle()
@@ -113,15 +118,16 @@ namespace Puzzle.Models
                 {
                     if (!(_boardState[rowIndex][columnIndex] is EmptyBoardPiece))
                     {
-                        continue;   
+                        continue;
                     }
 
                     if (rowIndex == BoardWidth - 1 && columnIndex == BoardWidth - 1)
                     {
                         return;
                     }
-                    
-                    SwapPieces((x: rowIndex, y: columnIndex), (BoardWidth - 1) - rowIndex, (BoardWidth - 1) - columnIndex);
+
+                    SwapPieces((x: rowIndex, y: columnIndex), (BoardWidth - 1) - rowIndex,
+                        (BoardWidth - 1) - columnIndex);
 
                     return;
                 }
