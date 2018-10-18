@@ -21,12 +21,12 @@ namespace Puzzle.Models
             return new List<Direction>((Direction[]) Enum.GetValues(typeof(Direction)));
         }
 
-        public void Move(Direction direction)
+        public void MovePiece(Direction direction)
         {
-            Move(direction, CurrentBoardState[_emptyBoardPieceLocation.x][_emptyBoardPieceLocation.y]);
+            MovePiece(direction, CurrentBoardState[_emptyBoardPieceLocation.x][_emptyBoardPieceLocation.y]);
         }
 
-        private void Move(Direction direction, BoardPiece pieceToMove)
+        private void MovePiece(Direction direction, BoardPiece pieceToMove)
         {
             switch (direction)
             {
@@ -96,14 +96,14 @@ namespace Puzzle.Models
 
                 try
                 {
-                    Move((Direction) rnd.Next(0, BoardWidth), pieceToMove);
+                    MovePiece((Direction) rnd.Next(0, Enum.GetNames(typeof(Direction)).Length), pieceToMove);
                 }
                 catch
                 {
                     continue;
                 }
 
-                if (!pieceToMove.Visible)
+                if (pieceToMove is EmptyBoardPiece)
                 {
                     _emptyBoardPieceLocation = pieceToMove.Location;
                 }
@@ -113,7 +113,7 @@ namespace Puzzle.Models
 
             if (!Solvable())
             {
-                Move(Direction.Right, _boardState[0][0]);
+                MovePiece(Direction.Right, _boardState[0][0]);
             }
         }
 
@@ -123,7 +123,7 @@ namespace Puzzle.Models
             {
                 foreach (BoardPiece piece in row)
                 {
-                    if (piece.Visible)
+                    if (!(piece is EmptyBoardPiece))
                     {
                         continue;
                     }

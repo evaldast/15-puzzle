@@ -29,7 +29,7 @@ namespace Puzzle
                     _boardDrawer.DrawBoard(_board.CurrentBoardState);
                     _boardDrawer.DrawAvailableMoves(_board.GetAvailableMoves());
 
-                    _board.Move(_inputParser.RequestInput());
+                    _board.MovePiece(_inputParser.RequestInput());
                 }
                 catch (Exception e)
                 {

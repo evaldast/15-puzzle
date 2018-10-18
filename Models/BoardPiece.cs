@@ -2,20 +2,18 @@ namespace Puzzle.Models
 {
     public class BoardPiece
     {
-        public bool Visible { get; }
         public int Value { get; }
         public (int x, int y) Location { get; set; }
 
-        public BoardPiece(int xCoord, int yCoord, int value, bool visible = true)
+        public BoardPiece(int xCoord, int yCoord, int value)
         {
             Location = (x: xCoord, y: yCoord);
             Value = value;
-            Visible = visible;
         }
 
         public override string ToString()
         {
-            return Visible ? Value.ToString() : string.Empty;
+            return this is EmptyBoardPiece ? string.Empty : Value.ToString();
         }
 
         public override bool Equals(object obj)
