@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using Puzzle.Enums;
 
 namespace Puzzle.Models
@@ -75,11 +74,6 @@ namespace Puzzle.Models
             _boardState[pieceToMoveLocation.x][pieceToMoveLocation.y] = pieceToSwap;
             _boardState[pieceToMoveLocation.x + moveByX][pieceToMoveLocation.y + moveByY] = initialBoardPiece;
 
-//            (int x, int y) tempPieceToMoveLocation = initialBoardPiece.Location;
-//
-//            initialBoardPiece.Location = pieceToSwap.Location;
-//            pieceToSwap.Location = tempPieceToMoveLocation;
-
             if (initialBoardPiece is EmptyBoardPiece)
             {
                 _emptyBoardPieceLocation = (x: pieceToMoveLocation.x + moveByX, y: pieceToMoveLocation.y + moveByY);
@@ -119,21 +113,21 @@ namespace Puzzle.Models
 
         private void SwapEmptyPieceToBottomRightCorner()
         {
-            for (var i = 0; i < BoardWidth; i++)
+            for (var rowIndex = 0; rowIndex < BoardWidth; rowIndex++)
             {
-                for (var j = 0; j < BoardWidth; j++)
+                for (var columnIndex = 0; columnIndex < BoardWidth; columnIndex++)
                 {
-                    if (!(_boardState[i][j] is EmptyBoardPiece))
+                    if (!(_boardState[rowIndex][columnIndex] is EmptyBoardPiece))
                     {
                         continue;   
                     }
 
-                    if (i == BoardWidth - 1 && j == BoardWidth - 1)
+                    if (rowIndex == BoardWidth - 1 && columnIndex == BoardWidth - 1)
                     {
                         return;
                     }
                     
-                    SwapPieces((x: i, y: j), (BoardWidth - 1) - i, (BoardWidth - 1) - j);
+                    SwapPieces((x: rowIndex, y: columnIndex), (BoardWidth - 1) - rowIndex, (BoardWidth - 1) - columnIndex);
 
                     return;
                 }
