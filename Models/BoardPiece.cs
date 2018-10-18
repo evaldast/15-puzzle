@@ -3,11 +3,11 @@ namespace Puzzle.Models
     public class BoardPiece
     {
         public int Value { get; }
-        public (int x, int y) Location { get; set; }
+        //public (int x, int y) Location { get; set; }
 
         public BoardPiece(int xCoord, int yCoord, int value)
         {
-            Location = (x: xCoord, y: yCoord);
+            //Location = (x: xCoord, y: yCoord);
             Value = value;
         }
 

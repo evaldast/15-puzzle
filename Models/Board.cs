@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Puzzle.Enums;
 
 namespace Puzzle.Models
@@ -23,34 +24,34 @@ namespace Puzzle.Models
 
         public void MovePiece(Direction direction)
         {
-            MovePiece(direction, CurrentBoardState[_emptyBoardPieceLocation.x][_emptyBoardPieceLocation.y]);
+            MovePiece(direction, _emptyBoardPieceLocation);
         }
 
-        private void MovePiece(Direction direction, BoardPiece pieceToMove)
+        private void MovePiece(Direction direction, (int x, int y) pieceToMoveLocation)
         {
             switch (direction)
             {
                 case Direction.Up:
                 {
-                    SwapPieces(pieceToMove, -1, 0);
+                    SwapPieces(pieceToMoveLocation, -1, 0);
 
                     break;
                 }
                 case Direction.Down:
                 {
-                    SwapPieces(pieceToMove, 1, 0);
+                    SwapPieces(pieceToMoveLocation, 1, 0);
 
                     break;
                 }
                 case Direction.Left:
                 {
-                    SwapPieces(pieceToMove, 0, -1);
+                    SwapPieces(pieceToMoveLocation, 0, -1);
 
                     break;
                 }
                 case Direction.Right:
                 {
-                    SwapPieces(pieceToMove, 0, 1);
+                    SwapPieces(pieceToMoveLocation, 0, 1);
 
                     break;
                 }
@@ -60,28 +61,28 @@ namespace Puzzle.Models
             }
         }
 
-        private void SwapPieces(BoardPiece pieceToMove, int moveByX, int moveByY)
+        private void SwapPieces((int x, int y) pieceToMoveLocation, int moveByX, int moveByY)
         {
-            if ((pieceToMove.Location.x + moveByX < 0 || pieceToMove.Location.x + moveByX >= BoardWidth) ||
-                (pieceToMove.Location.y + moveByY < 0 || pieceToMove.Location.y + moveByY >= BoardWidth))
+            if ((pieceToMoveLocation.x + moveByX < 0 || pieceToMoveLocation.x + moveByX >= BoardWidth) ||
+                (pieceToMoveLocation.y + moveByY < 0 || pieceToMoveLocation.y + moveByY >= BoardWidth))
             {
                 throw new ArgumentException(Error.InvalidDirection.ToString());
             }
 
-            BoardPiece initialBoardPiece = _boardState[pieceToMove.Location.x][pieceToMove.Location.y];
-            BoardPiece pieceToSwap = _boardState[pieceToMove.Location.x + moveByX][pieceToMove.Location.y + moveByY];
+            BoardPiece initialBoardPiece = _boardState[pieceToMoveLocation.x][pieceToMoveLocation.y];
+            BoardPiece pieceToSwap = _boardState[pieceToMoveLocation.x + moveByX][pieceToMoveLocation.y + moveByY];
 
-            _boardState[pieceToMove.Location.x][pieceToMove.Location.y] = pieceToSwap;
-            _boardState[pieceToSwap.Location.x][pieceToSwap.Location.y] = initialBoardPiece;
+            _boardState[pieceToMoveLocation.x][pieceToMoveLocation.y] = pieceToSwap;
+            _boardState[pieceToMoveLocation.x + moveByX][pieceToMoveLocation.y + moveByY] = initialBoardPiece;
 
-            (int x, int y) tempPieceToMoveLocation = initialBoardPiece.Location;
+//            (int x, int y) tempPieceToMoveLocation = initialBoardPiece.Location;
+//
+//            initialBoardPiece.Location = pieceToSwap.Location;
+//            pieceToSwap.Location = tempPieceToMoveLocation;
 
-            initialBoardPiece.Location = pieceToSwap.Location;
-            pieceToSwap.Location = tempPieceToMoveLocation;
-
-            if (pieceToMove is EmptyBoardPiece)
+            if (initialBoardPiece is EmptyBoardPiece)
             {
-                _emptyBoardPieceLocation = initialBoardPiece.Location;
+                _emptyBoardPieceLocation = (x: pieceToMoveLocation.x + moveByX, y: pieceToMoveLocation.y + moveByY);
             }
         }
 
@@ -91,20 +92,20 @@ namespace Puzzle.Models
 
             for (var i = 1; i <= ShuffleThoroughness; i++)
             {
-                var pieceToMove = _boardState[rnd.Next(0, BoardWidth)][rnd.Next(0, BoardWidth)];
+                (int x, int y) pieceToMoveLocation = (x: rnd.Next(0, BoardWidth), y: rnd.Next(0, BoardWidth));
 
                 try
                 {
-                    MovePiece((Direction) rnd.Next(0, Enum.GetNames(typeof(Direction)).Length), pieceToMove);
+                    MovePiece((Direction) rnd.Next(0, Enum.GetNames(typeof(Direction)).Length), pieceToMoveLocation);
                 }
                 catch
                 {
                     continue;
                 }
 
-                if (pieceToMove is EmptyBoardPiece)
+                if (_boardState[pieceToMoveLocation.x][pieceToMoveLocation.y] is EmptyBoardPiece)
                 {
-                    _emptyBoardPieceLocation = pieceToMove.Location;
+                    _emptyBoardPieceLocation = pieceToMoveLocation;
                 }
             }
 
@@ -112,27 +113,29 @@ namespace Puzzle.Models
 
             if (!Solvable())
             {
-                MovePiece(Direction.Right, _boardState[0][0]);
+                MovePiece(Direction.Right, (x: 0, y: 0));
             }
         }
 
         private void SwapEmptyPieceToBottomRightCorner()
         {
-            foreach (BoardPiece[] row in _boardState)
+            for (var i = 0; i < BoardWidth; i++)
             {
-                foreach (BoardPiece piece in row)
+                for (var j = 0; j < BoardWidth; j++)
                 {
-                    if (!(piece is EmptyBoardPiece))
+                    if (!(_boardState[i][j] is EmptyBoardPiece))
                     {
-                        continue;
+                        continue;   
                     }
 
-                    if (piece.Location.x != BoardWidth - 1 || piece.Location.y != BoardWidth - 1)
+                    if (i == BoardWidth - 1 && j == BoardWidth - 1)
                     {
-                        SwapPieces(piece, (BoardWidth - 1) - piece.Location.x, (BoardWidth - 1) - piece.Location.y);
+                        return;
                     }
+                    
+                    SwapPieces((x: i, y: j), (BoardWidth - 1) - i, (BoardWidth - 1) - j);
 
-                    break;
+                    return;
                 }
             }
         }
@@ -176,8 +179,7 @@ namespace Puzzle.Models
                 }
             }
 
-            board[_emptyBoardPieceLocation.x][_emptyBoardPieceLocation.y] =
-                new EmptyBoardPiece(_emptyBoardPieceLocation.x, _emptyBoardPieceLocation.y);
+            board[_emptyBoardPieceLocation.x][_emptyBoardPieceLocation.y] = new EmptyBoardPiece(BoardWidth - 1, BoardWidth - 1);
 
             return board;
         }
