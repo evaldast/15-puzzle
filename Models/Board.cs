@@ -68,13 +68,12 @@ namespace Puzzle.Models
                 throw new ArgumentException(Error.InvalidDirection.ToString());
             }
 
-            BoardPiece initialBoardPiece = _boardState[pieceToMoveLocation.x][pieceToMoveLocation.y];
-            BoardPiece pieceToSwap = _boardState[pieceToMoveLocation.x + moveByX][pieceToMoveLocation.y + moveByY];
+            BoardPiece pieceToMove = _boardState[pieceToMoveLocation.x][pieceToMoveLocation.y];
 
-            _boardState[pieceToMoveLocation.x][pieceToMoveLocation.y] = pieceToSwap;
-            _boardState[pieceToMoveLocation.x + moveByX][pieceToMoveLocation.y + moveByY] = initialBoardPiece;
+            _boardState[pieceToMoveLocation.x][pieceToMoveLocation.y] = _boardState[pieceToMoveLocation.x + moveByX][pieceToMoveLocation.y + moveByY];
+            _boardState[pieceToMoveLocation.x + moveByX][pieceToMoveLocation.y + moveByY] = pieceToMove;
 
-            if (initialBoardPiece is EmptyBoardPiece)
+            if (pieceToMove is EmptyBoardPiece)
             {
                 _emptyBoardPieceLocation = (x: pieceToMoveLocation.x + moveByX, y: pieceToMoveLocation.y + moveByY);
             }
@@ -92,14 +91,9 @@ namespace Puzzle.Models
                 {
                     MovePiece((Direction) rnd.Next(0, Enum.GetNames(typeof(Direction)).Length), pieceToMoveLocation);
                 }
-                catch
+                catch (Exception)
                 {
-                    continue;
-                }
-
-                if (_boardState[pieceToMoveLocation.x][pieceToMoveLocation.y] is EmptyBoardPiece)
-                {
-                    _emptyBoardPieceLocation = pieceToMoveLocation;
+                    // ignored
                 }
             }
 
@@ -163,13 +157,13 @@ namespace Puzzle.Models
             var board = new BoardPiece[BoardWidth][];
             var currentValue = 1;
 
-            for (var i = 0; i < BoardWidth; i++)
+            for (var rowIndex = 0; rowIndex < BoardWidth; rowIndex++)
             {
-                board[i] = new BoardPiece[BoardWidth];
+                board[rowIndex] = new BoardPiece[BoardWidth];
 
-                for (var j = 0; j < BoardWidth; j++)
+                for (var columnIndex = 0; columnIndex < BoardWidth; columnIndex++)
                 {
-                    board[i][j] = new BoardPiece(i, j, currentValue++);
+                    board[rowIndex][columnIndex] = new BoardPiece(rowIndex, columnIndex, currentValue++);
                 }
             }
 
