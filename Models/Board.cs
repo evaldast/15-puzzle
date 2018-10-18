@@ -74,11 +74,10 @@ namespace Puzzle.Models
             _boardState[pieceToMove.Location.x][pieceToMove.Location.y] = pieceToSwap;
             _boardState[pieceToSwap.Location.x][pieceToSwap.Location.y] = initialBoardPiece;
 
-            (int x, int y) pieceToMoveLocation = initialBoardPiece.Location;
-            (int x, int y) pieceToSwapLocation = pieceToSwap.Location;
+            (int x, int y) tempPieceToMoveLocation = initialBoardPiece.Location;
 
-            initialBoardPiece.Location = pieceToSwapLocation;
-            pieceToSwap.Location = pieceToMoveLocation;
+            initialBoardPiece.Location = pieceToSwap.Location;
+            pieceToSwap.Location = tempPieceToMoveLocation;
 
             if (pieceToMove is EmptyBoardPiece)
             {
@@ -128,9 +127,9 @@ namespace Puzzle.Models
                         continue;
                     }
 
-                    if (piece.Location.x != 3 || piece.Location.y != 3)
+                    if (piece.Location.x != BoardWidth - 1 || piece.Location.y != BoardWidth - 1)
                     {
-                        SwapPieces(piece, 3 - piece.Location.x, 3 - piece.Location.y);
+                        SwapPieces(piece, (BoardWidth - 1) - piece.Location.x, (BoardWidth - 1) - piece.Location.y);
                     }
 
                     break;
