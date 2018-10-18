@@ -80,8 +80,8 @@ namespace Puzzle.Models
 
         private bool SwapIsValid((int x, int y) pieceToMoveLocation, int moveByX, int moveByY)
         {
-            return ((pieceToMoveLocation.x + moveByX < 0 || pieceToMoveLocation.x + moveByX >= BoardWidth) ||
-                    (pieceToMoveLocation.y + moveByY < 0 || pieceToMoveLocation.y + moveByY >= BoardWidth));
+            return ((pieceToMoveLocation.x + moveByX >= 0 && pieceToMoveLocation.x + moveByX < BoardWidth) &&
+                    (pieceToMoveLocation.y + moveByY >= 0 && pieceToMoveLocation.y + moveByY < BoardWidth));
         }
 
         public void Shuffle()
@@ -169,11 +169,11 @@ namespace Puzzle.Models
 
                 for (var columnIndex = 0; columnIndex < BoardWidth; columnIndex++)
                 {
-                    board[rowIndex][columnIndex] = new BoardPiece(rowIndex, columnIndex, currentValue++);
+                    board[rowIndex][columnIndex] = new BoardPiece(currentValue++);
                 }
             }
 
-            board[_emptyBoardPieceLocation.x][_emptyBoardPieceLocation.y] = new EmptyBoardPiece(BoardWidth - 1, BoardWidth - 1);
+            board[_emptyBoardPieceLocation.x][_emptyBoardPieceLocation.y] = new EmptyBoardPiece();
 
             return board;
         }
