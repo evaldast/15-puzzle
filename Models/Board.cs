@@ -88,7 +88,7 @@ namespace Puzzle.Models
         {
             var rnd = new Random();
 
-            for (var i = 1; i <= ShuffleThoroughness; i++)
+            for (var i = 0; i < ShuffleThoroughness; i++)
             {
                 (int x, int y) pieceToMoveLocation = (x: rnd.Next(0, BoardWidth), y: rnd.Next(0, BoardWidth));
 

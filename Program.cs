@@ -1,4 +1,5 @@
-﻿using Puzzle.Services;
+﻿using Puzzle.Input;
+using Puzzle.Render;
 
 namespace Puzzle
 {

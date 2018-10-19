@@ -1,6 +1,7 @@
 using System;
+using Puzzle.Input;
 using Puzzle.Models;
-using Puzzle.Services;
+using Puzzle.Render;
 using static System.Console;
 
 namespace Puzzle

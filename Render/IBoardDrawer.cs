@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Puzzle.Enums;
 using Puzzle.Models;
 
-namespace Puzzle.Services
+namespace Puzzle.Render
 {
     public interface IBoardDrawer
     {

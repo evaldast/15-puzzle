@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using Puzzle.Enums;
 using Puzzle.Models;
+using static System.Console;
 
-namespace Puzzle.Services
+namespace Puzzle.Render
 {
     public class TextBoardDrawer : IBoardDrawer
     {
@@ -29,20 +29,20 @@ namespace Puzzle.Services
 
                 stringifiedBoardRepresentation += "|";
 
-                Console.WriteLine(stringifiedBoardRepresentation);
+                WriteLine(stringifiedBoardRepresentation);
             }
         }
 
         public void DrawAvailableMoves(IEnumerable<Direction> availableMoves)
         {
-            Console.WriteLine("Please type in one of the directions:");
+            WriteLine("Please type in one of the directions:");
             
             foreach (var move in availableMoves)
             {
-                Console.WriteLine(move.ToString());                
+                WriteLine(move.ToString());                
             }
             
-            Console.WriteLine();
+            WriteLine();
         }
     }
 }

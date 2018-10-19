@@ -1,7 +1,7 @@
 using System;
 using Puzzle.Enums;
 
-namespace Puzzle.Services
+namespace Puzzle.Input
 {
     public class TerminalInputParser : IInputParser
     {

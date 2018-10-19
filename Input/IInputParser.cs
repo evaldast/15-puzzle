@@ -1,6 +1,6 @@
 using Puzzle.Enums;
 
-namespace Puzzle.Services
+namespace Puzzle.Input
 {
     public interface IInputParser
     {
